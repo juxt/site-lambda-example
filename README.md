@@ -4,12 +4,13 @@ This project contains a sample Clojure AWS Lambda application, including an embe
 
 ## REPL commands
 
-The template app uses [Integrant](https://github.com/weavejester/integrant) to setup a local [Site](https://github.com/juxt/site) instance. Start the REPL with `clj` then type:
+The template app uses [Integrant](https://github.com/weavejester/integrant) to setup a local [Site](https://github.com/juxt/site) instance. Start the REPL with `clj -M:dev` then type `(go)` to start an embedded Site instance equipped with related tooling.
 
-* `(go)` to start the embedded Site instance
-* `(nuke!)` Reset Site to clean install. Warning: all local changes will be lost.
+Now head to: http://localhost:2021/_site/insite/app/apis/graphql?url=/playground/graphql to start playing with a simple "Entity" schema. If requested, use admin/admin user password at login. The Entity playground schema is available in `site-modules/playground`. Follow the README in the playground folder for instructions on how to change or redeploy the schema.
 
-Now head to: http://localhost:2021/_site/insite/app/apis/graphql?url=/playground/graphql to start playing with a simple Entity schema. The Entity playground schema is available in `site-modules/playground`. Follow the README in the playground folder for instructions on how to change and redeploy the schema.
+![GraphiQL Console](graphiql.png?raw=true "Title")
+
+Site stores changes in the local XTDB node (the `.xtdb` folder). In case you want to restart from a clean Site installation (which still includes the playground and related tools), use `(nuke!)`.
 
 ## The `do` command
 
