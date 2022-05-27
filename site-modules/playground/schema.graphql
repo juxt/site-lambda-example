@@ -1,0 +1,26 @@
+schema @site(type: "pro.juxt/playground-v1") {
+  query: EntityQueries
+  mutation: EntityMutations
+}
+
+type EntityMutations {
+  addEntity(entity: EntityInput): Entity
+  updateEntity(id: ID entity: EntityInput): Entity @site(mutation: "update")
+  deleteEntity(id: ID): Entity @site(mutation: "delete")
+}
+
+type EntityQueries {
+  entities: [Entity]
+  entity(id: ID!): Entity
+}
+
+type Entity {
+  id: ID!
+  img: String
+  name: String
+}
+
+input EntityInput {
+  img: String
+  name: String
+}

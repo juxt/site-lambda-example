@@ -1,0 +1,13 @@
+mutation addEntity($entity: EntityInput) {
+  addEntity(entity: $entity) {
+    id
+    img
+    name
+  }
+}
+
+{"entity": {"img": "img1", "name": "name1"}}
+{"entity": {"img": "img2", "name": "name2"}}
+{"entity": {"img": "img3", "name": "name3"}}
+{"entity": {"img": "img4", "name": "name4"}}
+{"entity": {"img": "img5", "name": "name5"}}
