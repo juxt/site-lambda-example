@@ -19,8 +19,8 @@
                       io.github.cognitect-labs/test-runner
                       {:git/tag "v0.5.0" :git/sha "48c3c67"}}}
   :dev {; Uncomment to get the Site REPL running
-        ; :jvm-opts ["-Dclojure.server.site={:port,50505,:accept,juxt.site.alpha.repl-server/repl,:address,\"localhost\"}" "-Dsite.config=resources/config.edn"]
-        :jvm-opts ["-Dsite.config=resources/config.edn"]
+        ; :jvm-opts ["-Dclojure.server.site={:port,50505,:accept,juxt.site.alpha.repl-server/repl,:address,\"localhost\"}" "-Dsite.config=config.edn"]
+        :jvm-opts ["-Dsite.config=config.edn"]
         :extra-paths ["dev"]
         :extra-deps {integrant/repl {:mvn/version "0.3.2"}
                      ring/ring-jetty-adapter {:mvn/version "1.9.5"}

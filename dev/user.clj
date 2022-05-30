@@ -1,12 +1,12 @@
 (ns user
-  (:require [integrant.repl :as ig-repl]
+  (:require [clojure.java.io :as io]
             [integrant.core :as ig]
+            [integrant.repl :as ig-repl]
             [integrant.repl.state :as ig-state]
-            [pro.juxt.config :as config]
             [juxt.site.alpha.main :as site]
             [juxt.site.alpha.repl :as site-repl]
-            [xtdb.api :as xt]
-            [clojure.java.io :as io]))
+            [pro.juxt.config :as config]
+            [xtdb.api :as xt]))
 
 (ig-repl/set-prep! config/prepare-config)
 

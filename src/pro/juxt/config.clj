@@ -16,7 +16,7 @@
 
 (def aero-config
   (let [env (keyword (or (System/getenv "APP_ENV") (System/getProperty "app.env") "dev"))]
-    (aero/read-config (io/resource "config.edn") {:profile env})))
+    (aero/read-config (io/file "config.edn") {:profile env})))
 
 (defn prepare-config
   "Prepare Aero environment and load Integrant defmethods"
