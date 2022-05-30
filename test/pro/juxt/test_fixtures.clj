@@ -7,8 +7,8 @@
 
 (defn delete-all-entities
   []
-  (doseq [{:keys [id]} (site/events)]
-    (site/delete-event id)))
+  (doseq [{:keys [id]} (site/entities)]
+    (site/delete-entity id)))
 
 (defn ensure-site-running
   "Don't attempt to start the system if already running.
