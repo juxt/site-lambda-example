@@ -16,7 +16,7 @@ The Entity playground schema is available in `site-modules/playground`. After st
 
 * If you have the REPL open and initialised, you can use `(deploy-schema)` to push the current content of the schema to Site.
 * Alternatively, head over to `site-modules/playground` and use the `deploy.sh` script to push the latest changes. The folder also contains an `auto-refresh.sh` script to watch the schema files and update them automatically in case of changed. It requires [entr](https://github.com/clibs/entr).
-* The provided end-2-end test (see below) also refresh the schema with the latest changes.
+* The provided [end-2-end test](test/pro/juxt/entity_end2end_test.clj) (see below) also refresh the schema with the latest changes.
 
 ## Panic!
 
@@ -24,7 +24,7 @@ Site stores changes in the local XTDB node (the `.xtdb` folder). In case you wan
 
 ## End2End testing
 
-The project contains an example of end 2 end testing storing, retrieving and delete entities from Site. The test fixtures will start a Site instance unless one is already running (assuming it was started from the REPL).
+The project contains an example of [end2end testing](test/pro/juxt/entity_end2end_test.clj) storing, retrieving and delete entities from Site. The test fixtures will start a Site instance unless one is already running (assuming it was started from the REPL).
 
 ## The `do` command
 
