@@ -1,5 +1,6 @@
 (ns pro.juxt.lambda
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [pro.juxt.site :as site])
   (:gen-class
    :name pro.juxt.LambdaFn
    :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler]))

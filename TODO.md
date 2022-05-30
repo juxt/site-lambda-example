@@ -1,0 +1,2 @@
+- [ ] terraformed Site config as well, so it can deploy and the lambda can use it.
+- [ ] deps.new integration: `clojure -Tnew site :name myusername/mynewapp`
