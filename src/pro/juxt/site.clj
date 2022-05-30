@@ -68,7 +68,7 @@ query AllEntities {
     access-token))
 
 (defn create-entity [entity-name entity-img]
-  (let [endpoint (str config/site-endpoint "/playground/graphql")
+  (let [endpoint (str config/site-endpoint config/target-graphql-schema)
         body {:query query-add-entity
               :variables (cske/transform-keys
                           csk/->camelCaseKeyword
@@ -89,7 +89,7 @@ query AllEntities {
   (doall (map (fn [[name img]] (create-entity name img)) entities)))
 
 (defn entity [id]
-  (let [endpoint (str config/site-endpoint "/playground/graphql")
+  (let [endpoint (str config/site-endpoint config/target-graphql-schema)
         body {:query query-entity-by-id
               :variables (cske/transform-keys csk/->camelCaseKeyword {:id id})}
         response (http/post
@@ -104,7 +104,7 @@ query AllEntities {
         :entity)))
 
 (defn delete-entity [id]
-  (let [endpoint (str config/site-endpoint "/playground/graphql")
+  (let [endpoint (str config/site-endpoint config/target-graphql-schema)
         body {:query query-delete-entity
               :variables (cske/transform-keys csk/->camelCaseKeyword {:id id})}
         response (http/post
@@ -120,7 +120,7 @@ query AllEntities {
         :id)))
 
 (defn entities []
-  (let [endpoint (str config/site-endpoint "/playground/graphql")
+  (let [endpoint (str config/site-endpoint config/target-graphql-schema)
         body {:query query-entities
               :variables {}}
         response (http/post
