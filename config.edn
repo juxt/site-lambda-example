@@ -1,6 +1,7 @@
 {
  :juxt.site.alpha/seed-file "site-modules/seed/2022-05-24-141944.edn.zip"
  :juxt.site.alpha/base-uri "http://localhost:2021"
+ :juxt.site.alpha/graphql-schema "/playground/graphql"
  :juxt.site.alpha.unix-pass/password-prefix "site/local/"
  :juxt.site.alpha/basic-auth-user #profile {:dev "admin" :test "admin"}
  :juxt.site.alpha/basic-auth-pwd #profile {:dev "admin" :test "admin"}

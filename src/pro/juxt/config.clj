@@ -26,8 +26,9 @@
     cfg))
 
 (def site-seed-file (::site/seed-file aero-config))
+(def graphql-schema (::site/graphql-schema aero-config))
 (def site-endpoint (::site/base-uri aero-config))
 (def site-user (::site/basic-auth-user aero-config))
 (def site-pwd (::site/basic-auth-pwd aero-config))
-(def site-port (get-in aero-config [:juxt.site.alpha.server/server ::site/port]))
 (def xt-node (get-in aero-config [:ig/system :juxt.site.alpha.db/xt-node]))
+(def site-port (get-in aero-config [:juxt.site.alpha.server/server ::site/port]))

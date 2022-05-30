@@ -24,14 +24,14 @@
   (let [db (xt/db (:juxt.site.alpha.db/xt-node state))
         urls (xt/q db '{:find [uri]
                        :where [[uri :juxt.site.alpha/graphql-compiled-schema]]})]
-    (urls [(str config/site-endpoint "/playground/graphql")])))
+    (urls [(str config/site-endpoint config/graphql-schema)])))
 
 (defn ensure-init
   "Initialize Site by loading tooling and playground schema
   available in the seed folder. If the schema is already loaded and
   available it assumes Site is already initialized and skip seeding."
   []
-  (when is-site-initialized?
+  (when-not is-site-initialized?
     (let [input config/site-seed-file
           output "target/resources.edn"]
       (with-open [zinput (-> input io/input-stream java.util.zip.ZipInputStream.)]
