@@ -11,7 +11,7 @@
   (j/object-mapper
    {:decode-key-fn csk/->kebab-case-keyword}))
 
-(def query-add-entity
+(def mutation-add-entity
 "
 mutation addEntity($entity: EntityInput) {
   addEntity(entity: $entity) {
@@ -33,7 +33,7 @@ query Entity($id: ID!) {
 }
 ")
 
-(def query-delete-entity
+(def mutation-delete-entity
 "
 mutation DeleteEntity($id: ID!) {
   deleteEntity(id: $id) {
@@ -69,7 +69,7 @@ query AllEntities {
 
 (defn create-entity [entity-name entity-img]
   (let [endpoint (str config/site-endpoint config/target-graphql-schema)
-        body {:query query-add-entity
+        body {:query mutation-add-entity
               :variables (cske/transform-keys
                           csk/->camelCaseKeyword
                           {:entity {:name entity-name
@@ -105,7 +105,7 @@ query AllEntities {
 
 (defn delete-entity [id]
   (let [endpoint (str config/site-endpoint config/target-graphql-schema)
-        body {:query query-delete-entity
+        body {:query mutation-delete-entity
               :variables (cske/transform-keys csk/->camelCaseKeyword {:id id})}
         response (http/post
                   endpoint

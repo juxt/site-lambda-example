@@ -3,9 +3,10 @@
             [integrant.core :as ig]
             [integrant.repl :as ig-repl]
             [integrant.repl.state :as ig-state]
-            [juxt.site.alpha.main :as site]
+            [juxt.site.alpha.main :as site-main]
             [juxt.site.alpha.repl :as site-repl]
             [pro.juxt.config :as config]
+            [pro.juxt.site :as site]
             [xtdb.api :as xt]
             [clojure.tools.namespace.repl :refer [disable-reload!]]
             ))
@@ -15,11 +16,11 @@
 
 ;; Setup a shutdown hook to close cleanly on ctrl+c
 (.addShutdownHook (Runtime/getRuntime)
-                  (Thread. #(when-not (empty? site/system) (ig/halt! site/system))))
+                  (Thread. #(when-not (empty? site-main/system) (ig/halt! site-main/system))))
 
 (def state
-  "Convenience access to site/system state"
-  site/system)
+  "Convenience access to site-main/system state"
+  site-main/system)
 
 (defn is-site-initialized?
   "Check if xtdb contains the schema document for the playground schema."
@@ -28,6 +29,11 @@
         urls (xt/q db '{:find [uri]
                        :where [[uri :juxt.site.alpha/graphql-compiled-schema]]})]
     (urls [(str config/site-endpoint config/target-graphql-schema)])))
+
+(defn ensure-latest-schema
+  []
+  (site/upload-resource config/target-resources-file)
+  (site/upsert-graphql config/target-schema-file))
 
 (defn ensure-init
   "Initialize Site by loading tooling and playground schema
@@ -38,13 +44,14 @@
     (println "### Site already initialised with endpoint"
              (str config/site-endpoint config/target-graphql-schema))
     (do (println "### Site does not contain endpoint"
-             (str config/site-endpoint config/target-graphql-schema) ". Initialising.")
-    (let [input config/site-seed-file
-          output "target/resources.edn"]
-      (with-open [zinput (-> input io/input-stream java.util.zip.ZipInputStream.)]
-        (.getNextEntry zinput)
-        (io/copy zinput (io/file output)))
-      (site-repl/import-resources "target/resources.edn")))))
+                 (str config/site-endpoint config/target-graphql-schema) ". Initialising.")
+        (let [input config/site-seed-file
+              output "target/resources.edn"]
+          (with-open [zinput (-> input io/input-stream java.util.zip.ZipInputStream.)]
+            (.getNextEntry zinput)
+            (io/copy zinput (io/file output)))
+          (site-repl/import-resources "target/resources.edn")
+          (ensure-latest-schema)))))
 
 (defn nuke!
   "Panic button. Warning: this throws away the current Site state
@@ -63,15 +70,18 @@
   "First, it verifies Site has been initialized"
   []
   (let [system (ig-repl/go)]
-    (alter-var-root #'site/system (constantly ig-state/system))
-    (alter-var-root #'state (constantly site/system))
+    (alter-var-root #'site-main/system (constantly ig-state/system))
+    (alter-var-root #'state (constantly site-main/system))
     (ensure-init)
     (println "System initialized. Access state from user/state")))
+
+(defn deploy-schema []
+  (ensure-latest-schema))
 
 (defn halt []
   (do
    (ig-repl/halt)
-   (alter-var-root #'site/system (constantly {}))
+   (alter-var-root #'site-main/system (constantly {}))
    (alter-var-root #'state (constantly {}))))
 
 (def reset ig-repl/reset)

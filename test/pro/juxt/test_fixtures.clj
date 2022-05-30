@@ -1,14 +1,14 @@
 (ns pro.juxt.test-fixtures
   (:require [clojure.test :refer :all]
-            [user :refer [go]]
+            [user :refer [go ensure-latest-schema]]
             [pro.juxt.site :as site]
             [pro.juxt.config :as config])
   (:import [java.net Socket]))
 
 (defn delete-all-entities
   []
-  (doseq [{:keys [id]} (site/entities)]
-    (site/delete-entity id)))
+  (doseq [{:keys [id]} (site/events)]
+    (site/delete-event id)))
 
 (defn ensure-site-running
   "Don't attempt to start the system if already running.
@@ -23,12 +23,6 @@
          false
          (catch Exception e true))
     (go)))
-
-(defn ensure-latest-schema
-  "Note: target schema configuration is in config.edn"
-  []
-  (site/upload-resource config/target-resources-file)
-  (site/upsert-graphql config/target-schema-file))
 
 (defn site-setup [tests]
   (ensure-site-running)
