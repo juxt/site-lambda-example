@@ -12,6 +12,10 @@ Now head to: http://localhost:2021/_site/insite/app/apis/graphql?url=/playground
 
 Site stores changes in the local XTDB node (the `.xtdb` folder). In case you want to restart from a clean Site installation (which still includes the playground and related tools), use `(nuke!)`.
 
+## End2End testing
+
+The project contains an example of end 2 end testing storing, retrieving and delete entities from Site. The test fixtures will start a Site instance unless one is already running (assuming it was started from the REPL).
+
 ## The `do` command
 
 The project contains a `do` executable script that invokes the related Clojure build commands. It is there to avoid some additional typing and make it quicker to execute commands. Use with:

@@ -1,18 +1,17 @@
 {
  :juxt.site.alpha/seed-file "site-modules/seed/2022-05-24-141944.edn.zip"
  :juxt.site.alpha/base-uri "http://localhost:2021"
- :juxt.site.alpha/graphql-schema "/playground/graphql"
+ :juxt.site.alpha/target-graphql-schema "/playground/graphql"
+ :juxt.site.alpha/target-schema-file "site-modules/playground/schema.graphql"
+ :juxt.site.alpha/target-resources-file "site-modules/playground/resources.edn"
  :juxt.site.alpha.unix-pass/password-prefix "site/local/"
  :juxt.site.alpha/basic-auth-user #profile {:dev "admin" :test "admin"}
  :juxt.site.alpha/basic-auth-pwd #profile {:dev "admin" :test "admin"}
  :ig/system
  {:juxt.site.alpha.db/xt-node
-  {:xtdb/tx-log {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
-                            :db-dir ".xtdb/txes"}}
-   :xtdb/document-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
-                                    :db-dir ".xtdb/docs"}}
-   :xtdb/index-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store
-                                 :db-dir ".xtdb/idxs"}}}
+  {:xtdb/tx-log {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".xtdb/txes"}}
+   :xtdb/document-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".xtdb/docs"}}
+   :xtdb/index-store {:kv-store {:xtdb/module xtdb.rocksdb/->kv-store :db-dir ".xtdb/idxs"}}}
   :juxt.site.alpha.server/server
   {:juxt.site.alpha/xt-node #ig/ref :juxt.site.alpha.db/xt-node
    :juxt.site.alpha/port 2021

@@ -6,8 +6,11 @@
             [juxt.site.alpha.main :as site]
             [juxt.site.alpha.repl :as site-repl]
             [pro.juxt.config :as config]
-            [xtdb.api :as xt]))
+            [xtdb.api :as xt]
+            [clojure.tools.namespace.repl :refer [disable-reload!]]
+            ))
 
+(disable-reload!)
 (ig-repl/set-prep! config/prepare-config)
 
 ;; Setup a shutdown hook to close cleanly on ctrl+c
@@ -24,20 +27,24 @@
   (let [db (xt/db (:juxt.site.alpha.db/xt-node state))
         urls (xt/q db '{:find [uri]
                        :where [[uri :juxt.site.alpha/graphql-compiled-schema]]})]
-    (urls [(str config/site-endpoint config/graphql-schema)])))
+    (urls [(str config/site-endpoint config/target-graphql-schema)])))
 
 (defn ensure-init
   "Initialize Site by loading tooling and playground schema
   available in the seed folder. If the schema is already loaded and
   available it assumes Site is already initialized and skip seeding."
   []
-  (when-not is-site-initialized?
+  (if (is-site-initialized?)
+    (println "### Site already initialised with endpoint"
+             (str config/site-endpoint config/target-graphql-schema))
+    (do (println "### Site does not contain endpoint"
+             (str config/site-endpoint config/target-graphql-schema) ". Initialising.")
     (let [input config/site-seed-file
           output "target/resources.edn"]
       (with-open [zinput (-> input io/input-stream java.util.zip.ZipInputStream.)]
         (.getNextEntry zinput)
         (io/copy zinput (io/file output)))
-      (site-repl/import-resources "target/resources.edn"))))
+      (site-repl/import-resources "target/resources.edn")))))
 
 (defn nuke!
   "Panic button. Warning: this throws away the current Site state

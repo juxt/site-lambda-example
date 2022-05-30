@@ -26,7 +26,9 @@
     cfg))
 
 (def site-seed-file (::site/seed-file aero-config))
-(def graphql-schema (::site/graphql-schema aero-config))
+(def target-graphql-schema (::site/target-graphql-schema aero-config))
+(def target-schema-file (::site/target-schema-file aero-config))
+(def target-resources-file (::site/target-resources-file aero-config))
 (def site-endpoint (::site/base-uri aero-config))
 (def site-user (::site/basic-auth-user aero-config))
 (def site-pwd (::site/basic-auth-pwd aero-config))

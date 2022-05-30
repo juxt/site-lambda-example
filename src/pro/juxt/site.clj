@@ -3,7 +3,9 @@
             [clj-http.client :as http]
             [jsonista.core :as j]
             [camel-snake-kebab.core :as csk]
-            [camel-snake-kebab.extras :as cske]))
+            [camel-snake-kebab.extras :as cske]
+            [clojure.string :as string]
+            [clojure.java.io :as io]))
 
 (def mapper
   (j/object-mapper
@@ -131,3 +133,22 @@ query AllEntities {
         (j/read-value mapper)
         :data
         :entities)))
+
+(defn upsert-graphql
+  "Upload or update a GraphQL schema file"
+  [file]
+  (http/put
+   (str config/site-endpoint config/target-graphql-schema)
+   {:body (-> file io/file slurp (string/replace "{{base-uri}}" config/site-endpoint))
+    :headers {"authorization" (str "Bearer " (get-site-token))
+              "Content-Type" "application/graphql"
+              "accept" "text/plain"}}))
+
+(defn upload-resource
+  "Upload generic resources into Site"
+  [file]
+  (http/post
+   (str config/site-endpoint "/_site/resources/")
+   {:body (-> file io/file slurp (string/replace "{{base-uri}}" config/site-endpoint))
+    :headers {"authorization" (str "Bearer " (get-site-token))
+              "Content-Type" "application/edn"}}))
