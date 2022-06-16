@@ -1,5 +1,6 @@
 (ns user
   (:require [clojure.java.io :as io]
+            [clojure.java.shell :refer [sh]]
             [integrant.core :as ig]
             [integrant.repl :as ig-repl]
             [integrant.repl.state :as ig-state]
@@ -47,6 +48,7 @@
                  (str config/site-endpoint config/target-graphql-schema) ". Initialising.")
         (let [input config/site-seed-file
               output "target/resources.edn"]
+          (sh "mkdir" "-p" "target") ; make sure target exists
           (with-open [zinput (-> input io/input-stream java.util.zip.ZipInputStream.)]
             (.getNextEntry zinput)
             (io/copy zinput (io/file output)))
