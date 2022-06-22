@@ -9,13 +9,11 @@
 (defn compile
   "Compile Clojure and create the jar package"
   [opts]
-  (-> opts
-      (assoc :lib 'pro.juxt/lambda
-             :version "0.1"
-             :ns-compile '[pro.juxt.lambda]
-             :uber-file "target/lambda.jar")
-      (b/clean)
-      (b/uber)))
+  (let [cmd ["clj" "-M:uberdeps" "--target" "target/lambda.jar"
+             "--main-class" "pro.juxt.lambda"]
+        output (clojure.core/apply sh (into cmd opts))]
+    (println (:out output))
+    (println (:err output))))
 
 (defn- terraform [cmd & opts]
   (let [cmd (clojure.core/apply sh "terraform" "-chdir=terraform" cmd opts)]
@@ -25,7 +23,7 @@
 (defn init [opts] (terraform "init"))
 (defn plan [opts] (terraform "plan"))
 (defn apply [opts] (terraform "apply" "-auto-approve"))
-(defn destroy [opts] (terraform "destroy"))
+(defn destroy [opts] (terraform "destroy" "-auto-approve"))
 
 (defn run [opts]
   (let [cmd ["aws" "lambda" "invoke"

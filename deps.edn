@@ -7,11 +7,15 @@
         metosin/jsonista {:mvn/version "0.3.5"}
         camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.2"}
         clj-http/clj-http {:mvn/version "3.12.3"}
-        com.cognitect.aws/api {:mvn/version "0.8.539"}
-        com.cognitect.aws/endpoints {:mvn/version "1.1.12.206"}
-        com.cognitect.aws/sqs {:mvn/version "822.2.1109.0"}}
+        ; com.cognitect.aws/api {:mvn/version "0.8.539"}
+        ; com.cognitect.aws/endpoints {:mvn/version "1.1.12.206"}
+        ; com.cognitect.aws/sqs {:mvn/version "822.2.1109.0"}
+        }
  :aliases
- {:build {:deps {io.github.seancorfield/build-clj
+ {:uberdeps {:replace-deps {uberdeps/uberdeps {:mvn/version "1.1.4"}}
+             :replace-paths []
+             :main-opts ["-m" "uberdeps.uberjar"]}
+  :build {:deps {io.github.seancorfield/build-clj
                  {:git/tag "v0.8.0" :git/sha "9bd8b8a"}}
           :ns-default build}
   :test {:extra-paths ["test"]
