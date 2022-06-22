@@ -3,8 +3,8 @@
   (:require [org.corfield.build :as b]
             [clojure.java.shell :refer [sh]]))
 
-(defn test "Run the tests." [opts]
-  (b/run-tests opts))
+(defn test "Run the tests." [_]
+  (b/run-tests {:aliases [:dev]}))
 
 (defn compile
   "Compile Clojure and create the jar package"
