@@ -9,9 +9,11 @@
 (defn compile
   "Compile Clojure and create the jar package"
   [opts]
-  (let [cmd1 ["clj" "-M" "-e" "(compile 'pro.juxt.lambda)"]
+  (let [cmd0 ["mkdir" "classes"]
+        cmd1 ["clj" "-M" "-e" "(compile 'pro.juxt.lambda)"]
         cmd2 ["clj" "-M:uberdeps" "--target" "target/lambda.jar"
              "--main-class" "pro.juxt.lambda"]
+        output0 (clojure.core/apply sh (into cmd0 opts))
         output1 (clojure.core/apply sh (into cmd1 opts))
         output2 (clojure.core/apply sh (into cmd2 opts))
         ]
