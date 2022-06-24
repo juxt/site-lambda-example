@@ -1,3 +1,4 @@
 - [ ] terraformed Site config as well, so it can deploy and the lambda can use it.
 - [ ] deps.new integration: `clojure -Tnew site :name myusername/mynewapp`
 - [ ] target jar file close to 50MB. There are better solutions, such as SAM.
+- [ ] Create seed instruction for creating custom seeds
