@@ -69,12 +69,12 @@
    (io/delete-file file)))
 
 (defn go
-  "First, it verifies Site has been initialized"
-  []
+  "First, it verifies Site has been initialized, unless :skip-init is true."
+  [& {:keys [skip-init]}]
   (let [system (ig-repl/go)]
     (alter-var-root #'site-main/system (constantly ig-state/system))
     (alter-var-root #'state (constantly site-main/system))
-    (ensure-init)
+    (when-not skip-init (ensure-init))
     (println "System initialized. Access state from user/state")))
 
 (defn deploy-schema []

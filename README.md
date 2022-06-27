@@ -1,6 +1,6 @@
-# Terraformed AWS Lambda template with Clojure
+# Lambda-based Site-service template
 
-This project contains a sample Clojure AWS Lambda application, including an embedded Site/XTDB development environment to test features locally. The Lambda sample application can read/write into Site/XTDB using GraphQL. Terraform scripts will allow to push the Lambda to AWS.
+This template app uses [Integrant](https://github.com/weavejester/integrant) to setup a local [Site](https://github.com/juxt/site) component. Start the REPL with `clj -M:dev` then type `(go)` to start an embedded Site instance which comes equipped with basic authorization (admin:admin), GraphQL tools and a sample schema. Now head to: http://localhost:2021/_site/insite/app/apis/
 
 ## REPL commands
 
@@ -12,15 +12,40 @@ Now head to: http://localhost:2021/_site/insite/app/apis/graphql?url=/playground
 
 ## Entity Playground Schema
 
-The Entity playground schema is available in `site-modules/playground`. After starting the REPL and `(go)`, the schema is already available as explained above. If you want to play with the schema and change things, there are several ways to keep the schema up to date:
+The "Entity" playground schema is available in `site-modules/playground`. After starting the REPL and `(go)`, the schema is available as explained above. If you want to play with the schema and change it, there are several ways to keep the schema up to date:
 
 * If you have the REPL open and initialised, you can use `(deploy-schema)` to push the current content of the schema to Site.
 * Alternatively, head over to `site-modules/playground` and use the `deploy.sh` script to push the latest changes. The folder also contains an `auto-refresh.sh` script to watch the schema files and update them automatically in case of changed. It requires [entr](https://github.com/clibs/entr).
 * The provided [end-2-end test](test/pro/juxt/entity_end2end_test.clj) (see below) also refresh the schema with the latest changes.
 
-## Panic!
+## Panic button
 
 Site stores changes in the local XTDB node (the `.xtdb` folder). In case you want to restart from a clean Site installation (which still includes the playground and related tools), use the `(nuke!)` command from the REPL, restart the REPL and hit `(go)` again. It will reset to the original installation and get rid of any subsequent changes. You can also manually `rm -rf .xtdb` with the same effect.
+
+## Changing the seed data
+
+If you want to change the seed data creating a new snapshot, follow the "Panic button" instructions above then restart the REPL.
+
+### With admin user and login
+
+* Follow the "Panic button" instructions above.
+* Restart the REPL.
+
+```clojure
+(go :skip-init true)
+(put-site-api!)
+(site-repl/put-auth-resources!)
+(site-repl/put-superuser-role!)
+(site-repl/put-superuser! "admin" "admin" "admin")
+```
+
+* Now open another terminal and `git clone https://github.com/juxt/site` and `cd opt/login-form` and follow the instructions to install the login form (look at site-modules/playground/deploy.sh for problem with tokens and executables).
+* At the REPL type `(site-repl/export-resources)` to create a new YYYY-MM-GG-HHMMSS.edn.zip file in the root folder.
+* Move the file to `site-modules/seed/with-admin-user.edn.zip`
+
+### Installing GraphiQL
+
+Installing GraphiQL in the snapshot is a little more involved, because it requires the node/yarn development tool chain. Instructions are available at https://github.com/juxt/site/tree/master/opt/insite-console. Once done, the steps are the same as above, export-resources creating a new snapshot file.
 
 ## End2End testing
 
