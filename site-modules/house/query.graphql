@@ -1,0 +1,24 @@
+mutation HouseMutations (
+  $house: HouseInput!
+  $rooms: [RoomInput!]!
+  $windows: [WindowInput!]!
+  ) {
+    addHouse(house: $house) { id }
+    addRooms(rooms: $rooms) { id }
+    addWindows(windows: $windows) { id }
+}
+
+{"house": {"id": "1",
+           "address": "28 Aldine Court"},
+ "rooms": [{"id": "1a",
+            "roomType": "Kitchen"},
+           {"id": "1b",
+            "roomType": "Bedroom"}],
+ "windows": [{"id": "1an",
+              "facing": "North"},
+             {"id": "1as",
+              "facing": "South"},
+             {"id": "1bw",
+              "facing": "West"},
+             {"id": "1be",
+              "facing": "East"}]}

@@ -1,0 +1,67 @@
+schema @site(type: "pro.juxt/house-v1") {
+  query: HouseQueries
+  mutation: HouseMutations
+}
+
+type HouseMutations {
+  addHouse(house: HouseInput): House
+  addRooms(rooms: [RoomInput]): [Room]
+  addWindows(windows: [WindowInput]): [Window]
+}
+
+type HouseQueries {
+  entities: [House]
+  house(id: ID!): House
+}
+
+input WindowInput {
+  id: ID!
+  facing: String
+}
+
+type Window {
+  id: ID!
+  facing: String
+}
+
+input RoomInput {
+  id: ID!
+  roomType: String
+}
+
+type Room {
+  id: ID!
+  roomType: String
+  windows: [Window]
+    @site(
+      q: {
+        edn: """
+        {:find [e]
+         :where [[e :windowRoomId "{{object-id}}"]
+                 [(get-attr e {{type}}) [t]]
+                 [(= t "Window")]]}
+        """
+      }
+    )
+}
+
+input HouseInput {
+  id: ID!
+  address: String
+}
+
+type House {
+  id: ID!
+  address: String
+  rooms: [Room]
+    @site(
+      q: {
+        edn: """
+        {:find [e]
+         :where [[e :roomHouseId "{{object-id}}"]
+                 [(get-attr e {{type}}) [t]]
+                 [(= t "Room")]]}
+        """
+      }
+    )
+}
