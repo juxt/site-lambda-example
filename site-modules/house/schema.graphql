@@ -25,8 +25,7 @@ input WindowInput {
 type Window {
   id: ID!
   facing: String
-  room: Room!
-    @site(ref: "windowRoomId")
+  room: Room! @site(ref: "windowRoomId")
 }
 
 input RoomInput {
@@ -38,19 +37,8 @@ input RoomInput {
 type Room {
   id: ID!
   roomType: String
-  house: House!
-    @site(ref: "roomHouseId")
-  windows: [Window]
-    @site(
-      q: {
-        edn: """
-        {:find [e]
-         :where [[e :windowRoomId "{{object-id}}"]
-                 [(get-attr e {{type}}) [t]]
-                 [(= t "Window")]]}
-        """
-      }
-    )
+  house: House! @site(ref: "roomHouseId")
+  windows: [Window] @site(ref: "windowRoomId")
 }
 
 input HouseInput {
@@ -61,15 +49,5 @@ input HouseInput {
 type House {
   id: ID!
   address: String
-  rooms: [Room]
-    @site(
-      q: {
-        edn: """
-        {:find [e]
-         :where [[e :roomHouseId "{{object-id}}"]
-                 [(get-attr e {{type}}) [t]]
-                 [(= t "Room")]]}
-        """
-      }
-    )
+  rooms: [Room] @site(ref: "roomHouseId")
 }
