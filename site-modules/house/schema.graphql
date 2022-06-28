@@ -22,6 +22,8 @@ input WindowInput {
 type Window {
   id: ID!
   facing: String
+  room: Room!
+    @site(ref: "windowRoomId")
 }
 
 input RoomInput {
@@ -32,6 +34,8 @@ input RoomInput {
 type Room {
   id: ID!
   roomType: String
+  house: House!
+    @site(ref: "roomHouseId")
   windows: [Window]
     @site(
       q: {
