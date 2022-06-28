@@ -14,6 +14,7 @@ type HouseQueries {
   rooms: [Room]
   windows: [Window]
   house(id: ID!): House
+  roomsForHouse(id: ID!): [Room] @site(itemForId: "roomHouseId")
 }
 
 input WindowInput {
