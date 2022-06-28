@@ -10,12 +10,15 @@ type HouseMutations {
 }
 
 type HouseQueries {
-  entities: [House]
+  houses: [House]
+  rooms: [Room]
+  windows: [Window]
   house(id: ID!): House
 }
 
 input WindowInput {
   id: ID!
+  windowRoomId: ID!
   facing: String
 }
 
@@ -28,6 +31,7 @@ type Window {
 
 input RoomInput {
   id: ID!
+  roomHouseId: ID!
   roomType: String
 }
 
