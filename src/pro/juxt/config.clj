@@ -33,4 +33,4 @@
 (def site-user (::site/basic-auth-user aero-config))
 (def site-pwd (::site/basic-auth-pwd aero-config))
 (def xt-node (get-in aero-config [:ig/system :juxt.site.alpha.db/xt-node]))
-(def site-port (get-in aero-config [:juxt.site.alpha.server/server ::site/port]))
+(def site-port (get-in aero-config [:ig/system :juxt.site.alpha.server/server ::site/port]))
